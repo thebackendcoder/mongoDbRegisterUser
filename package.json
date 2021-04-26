@@ -1,0 +1,23 @@
+{
+  "name": "passportAuthentication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thebackendcoder/passportAuthentication.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thebackendcoder/passportAuthentication/issues"
+  },
+  "homepage": "https://github.com/thebackendcoder/passportAuthentication#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
