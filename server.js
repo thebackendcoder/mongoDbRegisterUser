@@ -14,7 +14,7 @@ mongoose.connect(dbString, { useNewUrlParser: true, useUnifiedTopology: true }).
 
 app.get('/', function (req, res) {
     console.log("request is made to the server")
-    res.send("welcom to the home page");
+    res.send("welcome to the home page");
 })
 
 app.get('/login', function (req, res) {
@@ -23,15 +23,14 @@ app.get('/login', function (req, res) {
 
 app.get('/register', function (req, res) {
     console.log("the  requetst for the register  page is made");
-    res.send("welcome to the register page");
+    res.send("please do the registration");
 })
 
 // routes for handling the post request
 app.post('/register', async function (req, res) {
 
-    const { userName, email, password } = req.body
+    const { mobileNumber, email, password } = req.body
 
-    console.log("the username and password  is", userName, password, email);
     try {
         const result = await userregister.registerInMongo(req);
         console.log("hahah the result is ------------", result)
@@ -46,6 +45,11 @@ app.post('/register', async function (req, res) {
         console.log(err);
     }
 })
+
+app.post('/login', userregister.loginAuthentication)
+
+
+
 
 app.listen(3000, function () {
     console.log("listenting at port 3000")

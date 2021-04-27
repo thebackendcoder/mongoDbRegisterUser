@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const registeredSchema = new mongoose.Schema({
-    username: {
-        type: String,
+    mobileNumber: {
+        type: Number,
         required: true
     },
     email: {
@@ -19,7 +19,8 @@ const userSchema = mongoose.model('userdetails', registeredSchema);
 
 const registerInMongo = async function (req) {
 
-    const { userName, email, password } = req.body
+    const { mobileNumber, email, password } = req.body
+    console.log("------------------------", mobileNumber)
     const re = await userSchema.find({ email: email })
     console.log("the re.length is", re.length)
     if (re.length) {
@@ -31,7 +32,7 @@ const registerInMongo = async function (req) {
         console.log(typeof (hashPasword))
 
         const user = new userSchema({
-            username: userName,
+            mobileNumber: parseInt(mobileNumber),
             email: email,
             hashPassword: hashPasword
         })
@@ -45,7 +46,31 @@ const registerInMongo = async function (req) {
     }
 }
 
+const loginAuthentication = async function (req, res, next) {
+
+    const { email, password } = req.body;
+    let userPass;
+    let isValid;
+    const re = await userSchema.find({ email: email })
+    if (!re.length) {
+        res.send("the user doesnnt exists, please register");
+    }
+    else {
+        const person = await userSchema.findOne({ 'email': email })
+        console.log(person)
+        userPass = person.hashPassword
+        isValid = await bcrypt.compare(password, userPass)
+        if (isValid) {
+            res.redirect('/');
+        }
+        else {
+            res.send("invalid cred")
+        }
+    }
+
+}
+
 
 module.exports = {
-    registerInMongo
+    registerInMongo, loginAuthentication
 }
