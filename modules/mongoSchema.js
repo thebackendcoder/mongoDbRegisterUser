@@ -69,8 +69,6 @@ const loginAuthentication = async function (req, res, next) {
     }
 
 }
-
-
 module.exports = {
     registerInMongo, loginAuthentication
 }
