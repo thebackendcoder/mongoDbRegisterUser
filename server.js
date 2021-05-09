@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose');
 const userregister = require('./modules/mongoSchema.js')
@@ -8,7 +9,7 @@ const bodyParser = require('body-parser')
 const dairy = require('./dairy/dailyDairy')
 const app = express();
 app.use(bodyParser.json())
-const dbString = "mongodb+srv://mynewhero:fathermother@authmongodb.xvady.mongodb.net/registereduser?retryWrites=true&w=majority";
+const dbString = process.env.DBSTRING;
 mongoose.connect(dbString, { useNewUrlParser: true, useUnifiedTopology: true }).then(function (result) {
     console.log("Connected to the db")
 }).catch((err) => {
