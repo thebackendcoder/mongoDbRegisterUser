@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
-const userSchema= require('../modules/mongoSchema');
-
+const userSchema = require('../modules/mongoSchema');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const loginAuthentication = async function (req, res, next) {
 
@@ -17,15 +18,17 @@ const loginAuthentication = async function (req, res, next) {
         userPass = person.hashPassword
         isValid = await bcrypt.compare(password, userPass)
         if (isValid) {
-            res.redirect('/');
+          const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+          res.json({
+              accessToken :accessToken
+          })
         }
         else {
             res.send("invalid cred")
         }
     }
-
 }
 
-module.exports={
+module.exports = {
     loginAuthentication
 }
