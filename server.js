@@ -1,6 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const userregister = require('./modules/mongoSchema.js')
+const reg= require('./register/register')
+const auth = require('./auth/auth')
 const bodyParser = require('body-parser')
 
 const app = express();
@@ -28,12 +30,9 @@ app.get('/register', function (req, res) {
 
 // routes for handling the post request
 app.post('/register', async function (req, res) {
-
     const { mobileNumber, email, password } = req.body
-
     try {
-        const result = await userregister.registerInMongo(req);
-        console.log("hahah the result is ------------", result)
+        const result = await reg.registerInMongo(req);
         if (!result) {
             res.send("there was an error storing the data or the email is already registered")
         }
@@ -45,11 +44,7 @@ app.post('/register', async function (req, res) {
         console.log(err);
     }
 })
-
-app.post('/login', userregister.loginAuthentication)
-
-
-
+app.post('/login', auth.loginAuthentication);
 
 app.listen(3000, function () {
     console.log("listenting at port 3000")
