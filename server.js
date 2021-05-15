@@ -5,6 +5,7 @@ const userregister = require('./modules/mongoSchema.js')
 const reg = require('./register/register')
 const auth = require('./auth/auth')
 const autherisation = require('./auth/aurtherisation')
+const verify= require('./auth/verify');
 const bodyParser = require('body-parser')
 const dairy = require('./dairy/dailyDairy')
 const app = express();
@@ -35,7 +36,7 @@ app.post('/register', async function (req, res) {
             res.send("there was an error storing the data or the email is already registered")
         }
         else {
-            res.send("Thanks for registration")
+            res.send("Please click the link sent in mail for verification")
         }
     }
     catch (err) {
@@ -58,6 +59,8 @@ app.get('/getAllDays', autherisation.authenticationToken , async function(req,re
     res.send(finalresponse).status(200);
 
 })
+
+app.get('/verify',verify.verifyMail);
 
 app.listen(3000, function () {
     console.log("listenting at port 3000")

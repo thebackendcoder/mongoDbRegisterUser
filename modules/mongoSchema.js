@@ -12,6 +12,11 @@ const registeredSchema = new mongoose.Schema({
     hashPassword: {
         type: String,
         Required: true
+    },
+    
+    isVerified:{
+        type: Boolean,
+        Required: true
     }
 
 })

@@ -9,6 +9,7 @@ const loginAuthentication = async function (req, res, next) {
     let userPass;
     let isValid;
     const re = await userSchema.find({ email: email })
+    console.log("the user are", re)
     if (!re.length) {
         res.send("the user doesnnt exists, please register");
     }
@@ -18,10 +19,15 @@ const loginAuthentication = async function (req, res, next) {
         userPass = person.hashPassword
         isValid = await bcrypt.compare(password, userPass)
         if (isValid) {
-          const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
-          res.json({
-              accessToken :accessToken
-          })
+            if(person.isVerified){
+                const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+                res.json({
+                    accessToken :accessToken
+                })
+            }
+            else{
+                res.send("Please verify your mail for login")
+            }
         }
         else {
             res.send("invalid cred")
