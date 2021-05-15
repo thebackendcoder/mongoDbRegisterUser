@@ -1,5 +1,7 @@
 const bcrypt= require('bcryptjs');
 const uS= require('../modules/mongoSchema');
+const mailSend= require('../modules/mail');
+const jwt = require('jsonwebtoken');
 
 const registerInMongo = async function (req) {
     const { mobileNumber, email, password } = req.body
@@ -17,9 +19,12 @@ const registerInMongo = async function (req) {
         const user = new uS({
             mobileNumber: parseInt(mobileNumber),
             email: email,
-            hashPassword: hashPasword
+            hashPassword: hashPasword,
+            isVerified: false
         })
         const result = await user.save();
+        const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+        await mailSend.sendMail(accessToken,email);
         return true;
 
     }
