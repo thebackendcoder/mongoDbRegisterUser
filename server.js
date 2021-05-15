@@ -52,6 +52,13 @@ app.post('/writeDailyDairy', autherisation.authenticationToken, async function (
     }).status(200)
 })
 
+app.get('/getAllDays', autherisation.authenticationToken , async function(req,res){
+
+    const finalresponse= await dairy.getAllMyDays(req);
+    res.send(finalresponse).status(200);
+
+})
+
 app.listen(3000, function () {
     console.log("listenting at port 3000")
 })

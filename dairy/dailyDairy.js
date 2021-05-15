@@ -14,8 +14,21 @@ async function writingDairy(req) {
     await day.save();
 }
 
+
+async  function getAllMyDays(req){
+
+    const authToken= req.headers['authorization'];
+    console.log(authToken);
+    const mail= await jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET);
+    const res = await daySchema.find({user: mail});
+    return {
+        yourDay: res
+    }
+
+}
+
 module.exports = {
-    writingDairy
+    writingDairy, getAllMyDays
 }
 
 
